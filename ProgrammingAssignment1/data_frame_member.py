@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import custom_linear_regression_model
 import numpy as np
-class Data_Frame_Controller:
+class DataFrameController:
     def __init__(self, file_to_read, name):
         self.name = name
         self.dataFrame = pd.read_csv(file_to_read)
@@ -13,11 +13,12 @@ class Data_Frame_Controller:
         self.dataFrame = self.dataFrame.dropna()
 
     def print_first_few_rows(self):
+        print(self.name + " : ")
         print(self.dataFrame.head())
 
     def show_home_price_histogram(self):
         plt.hist(self.dataFrame["PRICE"], bins=100)
-        plt.title("Distribution of Home Prices")
+        plt.title(self.name + ": Distribution of Home Prices")
         plt.xlabel("Home Price (Per 1,000,000 USD)")
         plt.ylabel("Number of Homes")
         plt.xlim(0, 7000000)
@@ -26,7 +27,7 @@ class Data_Frame_Controller:
 
     def show_square_footage_histogram(self):
         plt.hist(self.dataFrame["SQUARE FEET"], bins=100)
-        plt.title("Distribution of Square Footage")
+        plt.title(self.name + " : Distribution of Square Footage")
         plt.xlabel("Square Footage")
         plt.ylabel("Number of Homes")
         plt.xlim(0, 5000)
@@ -54,7 +55,7 @@ class Data_Frame_Controller:
 
     def visualize_scatter_plot(self):
         plt.scatter(self.dataFrame["PRICE"], self.dataFrame["SQUARE FEET"])
-        plt.title("Price vs Square Footage")
+        plt.title(self.name + " : Price vs Square Footage")
         plt.xlabel("PRICE")
         plt.ylabel("SQUARE FEET")
         plt.xlim(0, 7000000)
@@ -63,7 +64,6 @@ class Data_Frame_Controller:
 
     def plot_regression_line(self, beta):
         # 1️⃣ Extract variables
-        X = self.dataFrame[["SQUARE FEET", "LOT SIZE", "YEAR BUILT"]].values
         y = self.dataFrame["PRICE"].values
 
         # 2️⃣ Fix other variables at their mean
@@ -85,7 +85,7 @@ class Data_Frame_Controller:
         # 6️⃣ Plot actual scatter + regression line
         plt.scatter(self.dataFrame["SQUARE FEET"], y, alpha=0.5, label="Actual Data")
         plt.plot(sqft_range, y_pred, color="red", linewidth=2, label="Regression Line")
-        plt.title("Price vs Square Footage (with Regression Line)")
+        plt.title(self.name + " : Price vs Square Footage (with Regression Line)")
         plt.xlabel("Square Footage")
         plt.ylabel("Home Price (USD)")
         plt.legend()
@@ -105,16 +105,20 @@ class Data_Frame_Controller:
 
         y_pred =  linear_regression.predict()
 
+        print(self.name + " : ")
+
+        print("\n")
         print("Beta coefficients:", linear_regression.beta)
         mean_price = self.dataFrame["PRICE"].mean()
         print("Mean Home Price:", mean_price)
         print("RMSE:", linear_regression.getRMSE(y_pred))
         print("RMSE as % of Mean Price:", (linear_regression.getRMSE(y_pred) / mean_price) * 100, "%")
+        print("\n")
 
         plt.scatter(y_test, y_pred)
         plt.xlabel("Actual Price")
         plt.ylabel("Predicted Price")
-        plt.title("Predicted vs Actual Prices")
+        plt.title(self.name + " : Predicted vs Actual Prices")
         plt.plot([0, max(y_test)], [0, max(y_test)], color='red')  # y=x line
         plt.show()
 

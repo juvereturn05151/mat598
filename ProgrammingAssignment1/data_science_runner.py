@@ -2,13 +2,13 @@ import data_frame_member
 from scipy import stats
 from statsmodels.stats.weightstats import ztest
 
-class Data_Science_Runner:
+class DataScienceRunner:
     def __init__(self):
-        self.dataFrame_redmond = (data_frame_member.Data_Frame_Controller
+        self.dataFrame_redmond = (data_frame_member.DataFrameController
                                   ("redfin_Redmond_98052.csv", "Redmond"))
-        self.dataFrame_bothell = (data_frame_member.Data_Frame_Controller
+        self.dataFrame_bothell = (data_frame_member.DataFrameController
                                   ("redfin_Bothell_98012.csv", "Bothell"))
-        self.dataFrame_woodinville = (data_frame_member.Data_Frame_Controller
+        self.dataFrame_woodinville = (data_frame_member.DataFrameController
                                   ("redfin_Woodinville_98072.csv", "Woodinville"))
 
     def print_first_few_rows(self):
