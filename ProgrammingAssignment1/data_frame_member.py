@@ -62,30 +62,31 @@ class DataFrameController:
         plt.ylim(0, 7000)
         plt.show()
 
-    def plot_regression_line(self, beta):
-        # 1️⃣ Extract variables
+    def plot_regression_line_predicted_price_vs_actual_price(self, y_test, y_pred):
+        plt.scatter(y_test, y_pred, alpha=0.5,label="Actual Data")
+        plt.xlabel("Actual Price")
+        plt.ylabel("Predicted Price")
+        plt.title(self.name + " : Predicted vs Actual Prices")
+        plt.plot([0, max(y_test)], [0, max(y_test)], color='red', label="Regression Line")  # y=x line
+        plt.legend()
+        plt.show()
+
+    def plot_regression_line_predicted_price_vs_sq_feet(self, beta):
         y = self.dataFrame["PRICE"].values
-
-        # 2️⃣ Fix other variables at their mean
-        avg_lot_size = np.mean(self.dataFrame["LOT SIZE"])
-        avg_year_built = np.mean(self.dataFrame["YEAR BUILT"])
-
-        # 3️⃣ Create a range of square footage values
         sqft_range = np.linspace(0, 7000, 100)
 
-        # 4️⃣ Build input matrix with average values
-        X_plot = np.c_[np.ones((100, 1)),  # intercept
-        sqft_range,  # variable on x-axis
-        np.full(100, avg_lot_size),
-        np.full(100, avg_year_built)]
+        x_plot = np.column_stack([
+            np.ones(100),
+            sqft_range,
+            np.full(100, self.dataFrame["LOT SIZE"].mean()),
+            np.full(100, self.dataFrame["YEAR BUILT"].mean())
+        ])
 
-        # 5️⃣ Compute predicted prices
-        y_pred = X_plot @ beta
+        y_pred = x_plot @ beta
 
-        # 6️⃣ Plot actual scatter + regression line
         plt.scatter(self.dataFrame["SQUARE FEET"], y, alpha=0.5, label="Actual Data")
         plt.plot(sqft_range, y_pred, color="red", linewidth=2, label="Regression Line")
-        plt.title(self.name + " : Price vs Square Footage (with Regression Line)")
+        plt.title(self.name + " : Predicted Price vs Square Footage (with Regression Line)")
         plt.xlabel("Square Footage")
         plt.ylabel("Home Price (USD)")
         plt.legend()
@@ -115,11 +116,5 @@ class DataFrameController:
         print("RMSE as % of Mean Price:", (linear_regression.getRMSE(y_pred) / mean_price) * 100, "%")
         print("\n")
 
-        plt.scatter(y_test, y_pred)
-        plt.xlabel("Actual Price")
-        plt.ylabel("Predicted Price")
-        plt.title(self.name + " : Predicted vs Actual Prices")
-        plt.plot([0, max(y_test)], [0, max(y_test)], color='red')  # y=x line
-        plt.show()
-
-        self.plot_regression_line(linear_regression.beta)
+        self.plot_regression_line_predicted_price_vs_actual_price(y_test, y_pred)
+        self.plot_regression_line_predicted_price_vs_sq_feet(linear_regression.beta)
