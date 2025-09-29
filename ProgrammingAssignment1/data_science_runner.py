@@ -40,12 +40,12 @@ class DataScienceRunner:
         alpha = 0.05
         z_critical = stats.norm.ppf(1 - alpha / 2)
 
-        print(f"Z-statistic: ", z_stat)
-        print(f"Z-critical: ", z_critical)
-        print(f"P-value: ", p_value)
+        print(f"Z-statistic:  {z_stat}")
+        print(f"Z-critical: {z_critical}")
+        print(f"P-value: {p_value}")
 
-        print(f"\nSince |{z_stat}| > {z_critical}, we reject the null hypothesis.")
-        print(f"\nSince {p_value} is low, we reject the null hypothesis.")
+        print(f"Since |{z_stat}| > {z_critical}, we reject the null hypothesis.")
+        print(f"Since {p_value} is low, we reject the null hypothesis.")
 
     def visualize_scatter_plot(self):
         self.dataFrame_redmond.visualize_scatter_plot()

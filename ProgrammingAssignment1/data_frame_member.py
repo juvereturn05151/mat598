@@ -7,8 +7,10 @@ class DataFrameController:
     def __init__(self, file_to_read, name):
         self.name = name
         self.dataFrame = pd.read_csv(file_to_read)
+
         # Select only columns we need
         self.dataFrame = self.dataFrame[["ZIP OR POSTAL CODE", "PRICE", "SQUARE FEET", "LOT SIZE", "YEAR BUILT"]]
+
         # Drop rows with missing data
         self.dataFrame = self.dataFrame.dropna()
 
@@ -47,9 +49,9 @@ class DataFrameController:
 
         for col, values in stats.items():
             print(f"\n--- {col} ---")
-            print(f"Mean   : {values['mean']:.2f}")
-            print(f"Median : {values['median']:.2f}")
-            print(f"Std Dev: {values['std_dev']:.2f}")
+            print(f"Mean   : {values['mean']}")
+            print(f"Median : {values['median']}")
+            print(f"Std Dev: {values['std_dev']}")
 
         return stats
 
@@ -109,11 +111,11 @@ class DataFrameController:
         print(self.name + " : ")
 
         print("\n")
-        print("Beta coefficients:", linear_regression.beta)
+        print(f"Beta coefficients: {linear_regression.beta}")
         mean_price = self.dataFrame["PRICE"].mean()
-        print("Mean Home Price:", mean_price)
-        print("RMSE:", linear_regression.getRMSE(y_pred))
-        print("RMSE as % of Mean Price:", (linear_regression.getRMSE(y_pred) / mean_price) * 100, "%")
+        print(f"Mean Home Price: {mean_price}")
+        print(f"RMSE: {linear_regression.getRMSE(y_pred)}")
+        print(f"RMSE as % of Mean Price:{(linear_regression.getRMSE(y_pred) / mean_price) * 100}%")
         print("\n")
 
         self.plot_regression_line_predicted_price_vs_actual_price(y_test, y_pred)
