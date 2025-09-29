@@ -1,6 +1,7 @@
 import data_frame_member
 from scipy import stats
 from statsmodels.stats.weightstats import ztest
+
 class Data_Science_Runner:
     def __init__(self):
         self.dataFrame_redmond = (data_frame_member.Data_Frame_Controller
@@ -39,9 +40,28 @@ class Data_Science_Runner:
         alpha = 0.05
         z_critical = stats.norm.ppf(1 - alpha / 2)
 
+        print(f"Z-statistic: ", z_stat)
+        print(f"Z-critical: ", z_critical)
+        print(f"P-value: ", p_value)
+
+        print(f"\nSince |{z_stat}| > {z_critical}, we reject the null hypothesis.")
+        print(f"\nSince {p_value} is low, we reject the null hypothesis.")
+
+    def visualize_scatter_plot(self):
+        self.dataFrame_redmond.visualize_scatter_plot()
+        self.dataFrame_bothell.visualize_scatter_plot()
+        self.dataFrame_woodinville.visualize_scatter_plot()
+
+    def perform_regression(self):
+        self.dataFrame_redmond.perform_linear_regression()
+        self.dataFrame_bothell.perform_linear_regression()
+        self.dataFrame_woodinville.perform_linear_regression()
+
     def run(self):
         self.print_first_few_rows()
         self.show_home_price_histogram()
         self.show_square_footage_histogram()
         self.print_calculate_mean_median_std_deviation()
         self.perform_hypothesis_test()
+        self.visualize_scatter_plot()
+        self.perform_regression()
